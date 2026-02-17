@@ -50,7 +50,7 @@ router.get('/', async (req: AuthRequest, res: Response) => {
 router.get('/:id', async (req: AuthRequest, res: Response) => {
     try {
         const userId = getUserId(req);
-        const memoryId = req.params.id;
+        const memoryId = req.params.id as string;
 
         const memory = await memoryService.getMemory(memoryId, userId);
 
@@ -72,7 +72,7 @@ router.get('/:id', async (req: AuthRequest, res: Response) => {
 router.patch('/:id', async (req: AuthRequest, res: Response) => {
     try {
         const userId = getUserId(req);
-        const memoryId = req.params.id;
+        const memoryId = req.params.id as string;
         const updates = req.body;
 
         const memory = await memoryService.updateMemory(memoryId, userId, updates);
@@ -91,7 +91,7 @@ router.patch('/:id', async (req: AuthRequest, res: Response) => {
 router.delete('/:id', async (req: AuthRequest, res: Response) => {
     try {
         const userId = getUserId(req);
-        const memoryId = req.params.id;
+        const memoryId = req.params.id as string;
 
         await memoryService.deleteMemory(memoryId, userId);
 

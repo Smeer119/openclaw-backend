@@ -45,7 +45,7 @@ class MemoryService {
                 content: input.content,
                 tags: input.tags || [],
                 autoTopics: [], // TODO: Extract topics using AI
-                items: input.items || null,
+                items: input.items ? input.items : undefined,
                 embeddingId,
                 linkedMemoryIds,
                 timestamp: BigInt(now),
@@ -143,7 +143,12 @@ class MemoryService {
         const updated = await prisma.memory.update({
             where: { id: memoryId },
             data: {
-                ...updates,
+                type: updates.type,
+                title: updates.title,
+                content: updates.content,
+                tags: updates.tags,
+                items: updates.items ? updates.items : undefined,
+                reminderAt: updates.reminderAt ? BigInt(updates.reminderAt) : undefined,
                 embeddingId,
                 updatedAt: new Date(),
             },
