@@ -48,8 +48,9 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
 
 // Start server
 const PORT = config.server.port;
-app.listen(PORT, () => {
-    console.log(`🚀 OpenClaw server running on port ${PORT}`);
+const HOST = '0.0.0.0'; // Railway requires binding to 0.0.0.0
+app.listen(PORT, HOST, () => {
+    console.log(`🚀 OpenClaw server running on ${HOST}:${PORT}`);
     console.log(`📍 Environment: ${config.server.nodeEnv}`);
     console.log(`🔒 CORS enabled for: ${config.server.allowedOrigins.join(', ')}`);
 });
