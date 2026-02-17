@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String    @id // Clerk user ID
+  email            String    @unique
+  name             String?
+  profileCompleted Boolean   @default(false)
+  
+  // Preferences (JSON)
+  preferences      Json      @default("{}")
+  
+  // Stats
+  totalMemories    Int       @default(0)
+  lastActive       DateTime  @default(now())
+  
+  // Timestamps
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  
+  // Relations
+  memories         Memory[]
+  
+  @@map("users")
+}
+
+model Memory {
+  id                String    @id @default(uuid())
+  userId            String
+  
+  // Content
+  type              String    // note, task, checklist, reminder
+  title             String?
+  content           String
+  items             Json?     // For checklists: ChecklistItem[]
+  
+  // Organization
+  tags              String[]
+  autoTopics        String[]  // AI-generated topics
+  
+  // Embeddings
+  embeddingId       String?
+  embeddingVersion  String    @default("gemini-embedding-004")
+  
+  // Relationships
+  linkedMemoryIds   String[]
+  
+  // Metadata
+  timestamp         BigInt
+  reminderAt        BigInt?
+  isPinned          Boolean   @default(false)
+  
+  // Timestamps
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  lastAccessedAt    DateTime  @default(now())
+  
+  // Relations
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([userId, timestamp])
+  @@index([userId, type])
+  @@map("memories")
+}
