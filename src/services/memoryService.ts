@@ -46,7 +46,7 @@ class MemoryService {
                 content: input.content,
                 tags: input.tags || [],
                 autoTopics: [], // TODO: Extract topics using AI
-                items: input.items ? (input.items as Prisma.InputJsonValue) : undefined,
+                items: input.items ? (input.items as unknown as Prisma.InputJsonValue) : undefined,
                 embeddingId,
                 linkedMemoryIds,
                 timestamp: BigInt(now),
@@ -148,7 +148,7 @@ class MemoryService {
                 title: updates.title,
                 content: updates.content,
                 tags: updates.tags,
-                items: updates.items ? (updates.items as Prisma.InputJsonValue) : undefined,
+                items: updates.items ? (updates.items as unknown as Prisma.InputJsonValue) : undefined,
                 reminderAt: updates.reminderAt ? BigInt(updates.reminderAt) : undefined,
                 embeddingId,
                 updatedAt: new Date(),
